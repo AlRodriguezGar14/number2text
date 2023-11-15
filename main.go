@@ -14,6 +14,12 @@ type Triad struct {
 
 func (t *Triad) WriteTriadEnglish(dic map[string]string) {
 	var printableTriad string
+	addSpace := false
+
+	if addSpace {
+		fmt.Printf(" ")
+		addSpace = false
+	}
 	if t.MaxValue > 0 {
 		max := strconv.Itoa(t.MaxValue)
 		printableTriad += fmt.Sprintf("%s %s ", dic[max], dic["100"])
@@ -31,13 +37,18 @@ func (t *Triad) WriteTriadEnglish(dic map[string]string) {
 			printableTriad += fmt.Sprintf("and ")
 		}
 		printableTriad += fmt.Sprintf("%s-%s ", dic[strconv.Itoa(t.MidValue)], dic[strconv.Itoa(t.MinValue)])
+	} else if t.MinValue == 0 && t.MidValue == 0 && t.TriadBlock == "1" {
+		printableTriad += fmt.Sprintf("%s ", dic[strconv.Itoa(t.MaxValue)])
 	}
 
 	if t.TriadBlock != "1" && t.MaxValue+t.MidValue+t.MinValue > 0 {
 		printableTriad += fmt.Sprintf("%s ", dic[t.TriadBlock])
 	}
-	printableTriad = printableTriad[:len(printableTriad)-1]
-	fmt.Printf(printableTriad)
+	if len(printableTriad) > 0 {
+		printableTriad = printableTriad[:len(printableTriad)-1]
+		fmt.Printf(printableTriad)
+		addSpace = true
+	}
 }
 
 func triadConstructor(triadBlock string, minValue int, midValue int, maxValue int) *Triad {
@@ -92,13 +103,8 @@ func main() {
 
 	reverseTriadContainer(&triadContainer)
 
-	addSpace := false
 	for i := 0; i < len(triadContainer); i++ {
-		if addSpace {
-			fmt.Printf(" ")
-		}
 		triadContainer[i].WriteTriadEnglish(Dictionary)
-		addSpace = true
 	}
 	// fmt.Println()
 }
