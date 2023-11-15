@@ -14,7 +14,6 @@ type Triad struct {
 
 func (t *Triad) WriteTriad(dic map[string]string) {
 
-	// fmt.Println("cent:", t.MaxValue)
 	if t.MaxValue > 0 {
 		printMax(strconv.Itoa(t.MaxValue), dic)
 	}
@@ -30,21 +29,22 @@ func (t *Triad) WriteTriad(dic map[string]string) {
 		printMidMin(strconv.Itoa(t.MidValue), strconv.Itoa(t.MinValue), dic)
 	}
 
-	// fmt.Println("dec:", t.MidValue)
-	// fmt.Println("num:", t.MinValue)
+	if t.TriadBlock != "1" {
+		fmt.Printf("%s ", dic[t.TriadBlock])
+	}
+
 }
 
 func printMax(i string, dic map[string]string) {
-	fmt.Println(dic[i])
-	fmt.Println(dic["100"])
+	fmt.Printf("%s %s ", dic[i], dic["100"])
 }
 
 func printMidMin(i string, opt string, dic map[string]string) {
 	if opt == "" {
-		fmt.Println(dic[i])
+		fmt.Printf("%s ", dic[i])
 	} else {
-		fmt.Println(dic[i])
-		fmt.Println(dic[opt])
+		fmt.Printf("%s ", dic[i])
+		fmt.Printf("%s ", dic[opt])
 	}
 }
 
@@ -77,6 +77,15 @@ func createTriads(i string, container *[]Triad) {
 	}
 }
 
+func reverseTriadContainer(container *[]Triad) {
+	l := len(*container)
+
+	for i := 0; i < l/2; i++ {
+		j := l - i - 1
+		(*container)[i], (*container)[j] = (*container)[j], (*container)[i]
+	}
+}
+
 func main() {
 	var input string
 	var triadContainer []Triad
@@ -89,8 +98,9 @@ func main() {
 	}
 	createTriads(input, &triadContainer)
 
+	reverseTriadContainer(&triadContainer)
+
 	for i := 0; i < len(triadContainer); i++ {
 		triadContainer[i].WriteTriad(Dictionary)
 	}
-	fmt.Println(triadContainer)
 }
