@@ -12,30 +12,7 @@ type Triad struct {
 	MaxValue   int
 }
 
-// func (t *Triad) WriteTriad(dic map[string]string) {
-//
-// 	if t.MaxValue > 0 {
-// 		printMax(strconv.Itoa(t.MaxValue), dic)
-// 	}
-//
-// 	if t.MidValue+t.MinValue <= 20 && t.MinValue+t.MinValue != 0 {
-// 		printMidMin(strconv.Itoa(t.MidValue+t.MinValue), "", dic)
-//
-// 	} else if t.MinValue == 0 {
-// 		printMidMin(strconv.Itoa(t.MidValue), "", dic)
-// 	} else if t.MidValue == 0 {
-// 		printMidMin(strconv.Itoa(t.MinValue), "", dic)
-// 	} else {
-// 		printMidMin(strconv.Itoa(t.MidValue), strconv.Itoa(t.MinValue), dic)
-// 	}
-//
-// 	if t.TriadBlock != "1" {
-// 		fmt.Printf("%s ", dic[t.TriadBlock])
-// 	}
-//
-// }
-
-func (t *Triad) WriteTriad(dic map[string]string) {
+func (t *Triad) WriteTriadEnglish(dic map[string]string) {
 
 	if t.MaxValue > 0 {
 		max := strconv.Itoa(t.MaxValue)
@@ -45,21 +22,18 @@ func (t *Triad) WriteTriad(dic map[string]string) {
 	if t.MidValue+t.MinValue <= 20 && t.MinValue+t.MinValue != 0 {
 		fmt.Printf("%s ", dic[strconv.Itoa(t.MidValue+t.MinValue)])
 
-	} else if t.MinValue == 0 {
+	} else if t.MinValue == 0 && t.MidValue != 0 {
 		fmt.Printf("%s ", dic[strconv.Itoa(t.MidValue)])
-	} else if t.MidValue == 0 {
+	} else if t.MidValue == 0 && t.MinValue != 0 {
 		fmt.Printf("%s ", dic[strconv.Itoa(t.MinValue)])
-	} else {
+	} else if t.MidValue != 0 && t.MinValue != 0 {
 		if t.TriadBlock == "1" {
 			fmt.Printf("and ")
 		}
 		fmt.Printf("%s-%s", dic[strconv.Itoa(t.MidValue)], dic[strconv.Itoa(t.MinValue)])
-		if t.TriadBlock != "1" {
-			fmt.Printf(" ")
-		}
 	}
 
-	if t.TriadBlock != "1" {
+	if t.TriadBlock != "1" && t.MaxValue+t.MidValue+t.MinValue > 0 {
 		fmt.Printf("%s ", dic[t.TriadBlock])
 	}
 
@@ -131,6 +105,7 @@ func main() {
 	reverseTriadContainer(&triadContainer)
 
 	for i := 0; i < len(triadContainer); i++ {
-		triadContainer[i].WriteTriad(Dictionary)
+		triadContainer[i].WriteTriadEnglish(Dictionary)
 	}
+	// fmt.Println()
 }
