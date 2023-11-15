@@ -57,7 +57,10 @@ func createTriads(i string, container *[]Triad) {
 	triadBlock := "1"
 	for idx >= 0 {
 		num, _ := strconv.Atoi(string(i[idx]))
-		dec, _ := strconv.Atoi(string(i[idx-1]))
+		dec := 0
+		if idx >= 1 {
+			dec, _ = strconv.Atoi(string(i[idx-1]))
+		}
 		cent := 0
 		if idx >= 2 {
 			cent, _ = strconv.Atoi(string(i[idx-2]))
