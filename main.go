@@ -13,43 +13,31 @@ type Triad struct {
 }
 
 func (t *Triad) WriteTriadEnglish(dic map[string]string) {
-
+	var printableTriad string
 	if t.MaxValue > 0 {
 		max := strconv.Itoa(t.MaxValue)
-		fmt.Printf("%s %s ", dic[max], dic["100"])
+		printableTriad += fmt.Sprintf("%s %s ", dic[max], dic["100"])
 	}
 
 	if t.MidValue+t.MinValue <= 20 && t.MinValue+t.MinValue != 0 {
-		fmt.Printf("%s ", dic[strconv.Itoa(t.MidValue+t.MinValue)])
+		printableTriad += fmt.Sprintf("%s ", dic[strconv.Itoa(t.MidValue+t.MinValue)])
 
 	} else if t.MinValue == 0 && t.MidValue != 0 {
-		fmt.Printf("%s ", dic[strconv.Itoa(t.MidValue)])
+		printableTriad += fmt.Sprintf("%s ", dic[strconv.Itoa(t.MidValue)])
 	} else if t.MidValue == 0 && t.MinValue != 0 {
-		fmt.Printf("%s ", dic[strconv.Itoa(t.MinValue)])
+		printableTriad += fmt.Sprintf("%s ", dic[strconv.Itoa(t.MinValue)])
 	} else if t.MidValue != 0 && t.MinValue != 0 {
 		if t.TriadBlock == "1" {
-			fmt.Printf("and ")
+			printableTriad += fmt.Sprintf("and ")
 		}
-		fmt.Printf("%s-%s", dic[strconv.Itoa(t.MidValue)], dic[strconv.Itoa(t.MinValue)])
+		printableTriad += fmt.Sprintf("%s-%s ", dic[strconv.Itoa(t.MidValue)], dic[strconv.Itoa(t.MinValue)])
 	}
 
 	if t.TriadBlock != "1" && t.MaxValue+t.MidValue+t.MinValue > 0 {
-		fmt.Printf("%s ", dic[t.TriadBlock])
+		printableTriad += fmt.Sprintf("%s ", dic[t.TriadBlock])
 	}
-
-}
-
-func printMax(i string, dic map[string]string) {
-	fmt.Printf("%s %s ", dic[i], dic["100"])
-}
-
-func printMidMin(i string, opt string, dic map[string]string) {
-	if opt == "" {
-		fmt.Printf("%s ", dic[i])
-	} else {
-		fmt.Printf("%s", dic[i])
-		fmt.Printf("-%s ", dic[opt])
-	}
+	printableTriad = printableTriad[:len(printableTriad)-1]
+	fmt.Printf(printableTriad)
 }
 
 func triadConstructor(triadBlock string, minValue int, midValue int, maxValue int) *Triad {
@@ -104,8 +92,13 @@ func main() {
 
 	reverseTriadContainer(&triadContainer)
 
+	addSpace := false
 	for i := 0; i < len(triadContainer); i++ {
+		if addSpace {
+			fmt.Printf(" ")
+		}
 		triadContainer[i].WriteTriadEnglish(Dictionary)
+		addSpace = true
 	}
 	// fmt.Println()
 }
