@@ -1,8 +1,11 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"strconv"
+	"unicode"
 )
 
 type Triad struct {
@@ -30,13 +33,16 @@ func (t *Triad) WriteTriadEnglish(dic map[string]string) {
 
 	} else if t.MinValue == 0 && t.MidValue != 0 {
 		printableTriad += fmt.Sprintf("%s ", dic[strconv.Itoa(t.MidValue)])
+
 	} else if t.MidValue == 0 && t.MinValue != 0 {
 		printableTriad += fmt.Sprintf("%s ", dic[strconv.Itoa(t.MinValue)])
+
 	} else if t.MidValue != 0 && t.MinValue != 0 {
 		if t.TriadBlock == "1" {
 			printableTriad += fmt.Sprintf("and ")
 		}
 		printableTriad += fmt.Sprintf("%s-%s ", dic[strconv.Itoa(t.MidValue)], dic[strconv.Itoa(t.MinValue)])
+
 	} else if t.MinValue == 0 && t.MidValue == 0 && t.TriadBlock == "1" {
 		printableTriad += fmt.Sprintf("%s ", dic[strconv.Itoa(t.MaxValue)])
 	}
@@ -89,13 +95,27 @@ func reverseTriadContainer(container *[]Triad) {
 	}
 }
 
+func isValidInput(input string) bool {
+	for _, char := range input {
+		if !unicode.IsDigit(char) {
+			return false
+		}
+	}
+	return true
+}
+
 func main() {
 	var input string
 	var triadContainer []Triad
-	fmt.Println("Write a number:")
-	fmt.Scanln(&input)
 
-	if input == "" {
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Print("Write a number: ")
+
+	if scanner.Scan() {
+		input = scanner.Text()
+	}
+
+	if isValidInput(input) == false || input == "" {
 		fmt.Println("Incorrect input")
 		return
 	}
